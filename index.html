@@ -4,8 +4,92 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistem E-Hadir Staf</title>
+    <!-- Memuatkan Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    
+    <!-- KOD CSS DIGABUNGKAN DI SINI -->
+    <style>
+        /* Gaya keseluruhan untuk body */
+        body {
+            background-color: #f0f2f5;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 1rem;
+        }
+
+        /* Gaya untuk kad utama */
+        .card {
+            max-width: 500px;
+            width: 100%;
+            border: none;
+            border-radius: 15px;
+        }
+
+        .card-header {
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+        }
+
+        .card-footer {
+            border-bottom-left-radius: 15px;
+            border-bottom-right-radius: 15px;
+        }
+
+        /* Gaya untuk bekas pengimbas QR */
+        #qr-reader {
+            border: 2px dashed #0d6efd;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+        }
+
+        /* Gaya untuk input nombor IC */
+        #ic-input {
+            letter-spacing: 0.5em;
+            font-weight: bold;
+            font-size: 1.5rem;
+            text-align: center;
+            border-radius: 8px;
+        }
+
+        /* Gaya untuk butang Hantar */
+        #submit-btn {
+            width: 50%;
+            padding: 10px;
+            font-size: 1.1rem;
+            border-radius: 8px;
+        }
+
+        /* Gaya untuk mesej status */
+        #status-message {
+            font-size: 1.2rem;
+            padding: 1rem;
+            border-radius: 8px;
+            display: none; /* Tersembunyi pada mulanya */
+        }
+
+        /* Gaya spesifik untuk mesej kejayaan */
+        .success-message {
+            background-color: #d1e7dd;
+            color: #0f5132;
+            display: block !important;
+        }
+
+        /* Gaya spesifik untuk mesej ralat */
+        .error-message {
+            background-color: #f8d7da;
+            color: #842029;
+            display: block !important;
+        }
+
+        /* Menambah sedikit animasi pada spinner */
+        #loading-spinner .spinner-border {
+            width: 3rem;
+            height: 3rem;
+        }
+    </style>
 </head>
 <body>
 
@@ -20,7 +104,6 @@
                 <div id="scanner-container">
                     <p>Sila halakan kamera pada Kod QR yang disediakan.</p>
                     <div id="qr-reader" style="width: 100%;"></div>
-                    <div id="qr-reader-results"></div>
                 </div>
 
                 <div id="form-container" class="d-none">
@@ -50,8 +133,116 @@
         </div>
     </div>
 
+    <!-- Memuatkan pustaka pengimbas kod QR -->
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
     
-    <script src="script.js"></script>
+    <!-- KOD JAVASCRIPT DIGABUNGKAN DI SINI -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            const scannerContainer = document.getElementById('scanner-container');
+            const formContainer = document.getElementById('form-container');
+            const resultContainer = document.getElementById('result-container');
+            const loadingSpinner = document.getElementById('loading-spinner');
+            const icInput = document.getElementById('ic-input');
+            const submitBtn = document.getElementById('submit-btn');
+            const statusMessage = document.getElementById('status-message');
+
+            // PENTING: Pastikan URL ini adalah URL Web App anda yang terkini
+            const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwEhxdqNAr8EbhrG1vHMJawSrW6AH-UMRPAdIfq0BWewKkdZ_PKdvhxCyDITYyL39s6Yw/exec'; 
+
+            let html5QrCode;
+
+            function startScanner() {
+                html5QrCode = new Html5Qrcode("qr-reader");
+                const qrCodeSuccessCallback = (decodedText, decodedResult) => {
+                    console.log(`Kod diimbas: ${decodedText}`);
+                    html5QrCode.stop().then(() => {
+                        scannerContainer.classList.add('d-none');
+                        formContainer.classList.remove('d-none');
+                        icInput.focus();
+                    }).catch(err => console.error("Gagal menghentikan pengimbas.", err));
+                };
+                const config = { fps: 10, qrbox: { width: 250, height: 250 } };
+                html5QrCode.start({ facingMode: "environment" }, config, qrCodeSuccessCallback)
+                    .catch(err => {
+                        console.error("Tidak dapat memulakan pengimbas QR", err);
+                        showMessage("Gagal memulakan kamera. Sila beri kebenaran akses kamera.", false);
+                        scannerContainer.innerText = "Ralat: Sila pastikan anda memberi kebenaran untuk menggunakan kamera dan muat semula halaman.";
+                    });
+            }
+
+            function showLoading(isLoading) {
+                if (isLoading) {
+                    formContainer.classList.add('d-none');
+                    loadingSpinner.classList.remove('d-none');
+                    submitBtn.disabled = true;
+                } else {
+                    loadingSpinner.classList.add('d-none');
+                    formContainer.classList.remove('d-none');
+                    submitBtn.disabled = false;
+                }
+            }
+
+            function showMessage(message, isSuccess) {
+                statusMessage.textContent = message;
+                statusMessage.className = 'fw-bold';
+                if (isSuccess) {
+                    statusMessage.classList.add('success-message');
+                } else {
+                    statusMessage.classList.add('error-message');
+                }
+                formContainer.classList.add('d-none');
+                resultContainer.classList.remove('d-none');
+            }
+
+            function resetUI() {
+                setTimeout(() => {
+                    icInput.value = '';
+                    resultContainer.classList.add('d-none');
+                    statusMessage.textContent = '';
+                    statusMessage.className = 'fw-bold';
+                    scannerContainer.classList.remove('d-none');
+                    startScanner();
+                }, 5000); // Tunggu 5 saat sebelum reset
+            }
+
+            submitBtn.addEventListener('click', () => {
+                const icValue = icInput.value;
+                if (!/^\d{4}$/.test(icValue)) {
+                    alert("Sila masukkan 4 digit nombor sahaja.");
+                    return;
+                }
+
+                showLoading(true);
+
+                fetch(WEB_APP_URL, {
+                    method: 'POST',
+                    mode: 'cors',
+                    cache: 'no-cache',
+                    redirect: 'follow',
+                    headers: {
+                        'Content-Type': 'text/plain;charset=utf-8',
+                    },
+                    body: JSON.stringify({ ic: icValue }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Respon dari server:", data);
+                    showLoading(false);
+                    showMessage(data.message, data.success);
+                    resetUI();
+                })
+                .catch(error => {
+                    console.error("Ralat komunikasi dengan server:", error);
+                    showLoading(false);
+                    showMessage("Ralat: Gagal menghubungi server. Sila semak sambungan internet atau URL Web App.", false);
+                    resetUI();
+                });
+            });
+
+            startScanner();
+        });
+    </script>
 </body>
 </html>
