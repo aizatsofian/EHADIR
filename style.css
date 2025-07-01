@@ -32,7 +32,7 @@ body {
 }
 
 #form-container {
-  display: none; /* hidden by default, shown after scan */
+  /* Baris 'display: none;' telah dipadam dari sini */
 }
 
 input {
