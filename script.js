@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const statusMessage = document.getElementById('status-message');
 
     // !!! PENTING: ANDA PERLU MASUKKAN URL WEB APP ANDA DI SINI SELEPAS DEPLOY !!!
-    const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwaDry-E8RihZZn7iiue_eGKd-aj4dNp-9WnzMJRcPAW47JjnDxAbjpUi_Hk2XwWIdmLQ/exec'; 
+    const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwEhxdqNAr8EbhrG1vHMJawSrW6AH-UMRPAdIfq0BWewKkdZ_PKdvhxCyDITYyL39s6Yw/exec'; 
 
     let html5QrCode;
 
