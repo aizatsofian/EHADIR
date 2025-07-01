@@ -31,10 +31,6 @@ body {
   margin-bottom: 15px;
 }
 
-#form-container {
-  /* Baris 'display: none;' telah dipadam dari sini */
-}
-
 input {
   width: 100%;
   padding: 10px;
