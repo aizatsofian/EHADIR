@@ -1,0 +1,89 @@
+/* style.css */
+
+/* Gaya keseluruhan untuk body */
+body {
+    background-color: #f0f2f5; /* Warna latar belakang yang lembut */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Font yang moden */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 1rem;
+}
+
+/* Gaya untuk kad utama */
+.card {
+    max-width: 500px;
+    width: 100%;
+    border: none; /* Tiada sempadan untuk rupa yang lebih moden */
+    border-radius: 15px; /* Sudut yang lebih bulat */
+}
+
+.card-header {
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+}
+
+.card-footer {
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+}
+
+/* Gaya untuk bekas pengimbas QR */
+#qr-reader {
+    border: 2px dashed #0d6efd; /* Sempadan putus-putus biru */
+    border-radius: 10px;
+    margin-bottom: 1rem;
+}
+
+/* Gaya untuk input nombor IC */
+#ic-input {
+    letter-spacing: 0.5em; /* Jarak antara nombor untuk mudah dibaca */
+    font-weight: bold;
+    font-size: 1.5rem; /* Saiz font yang besar */
+    text-align: center;
+    border-radius: 8px;
+}
+
+/* Menghilangkan anak panah pada input nombor */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Gaya untuk butang Hantar */
+#submit-btn {
+    width: 50%;
+    padding: 10px;
+    font-size: 1.1rem;
+    border-radius: 8px;
+}
+
+/* Gaya untuk mesej status */
+#status-message {
+    font-size: 1.2rem;
+    padding: 1rem;
+    border-radius: 8px;
+    display: none; /* Tersembunyi pada mulanya, akan ditunjukkan oleh JavaScript */
+}
+
+/* Gaya spesifik untuk mesej kejayaan */
+.success-message {
+    background-color: #d1e7dd; /* Hijau lembut */
+    color: #0f5132; /* Hijau gelap */
+    display: block !important;
+}
+
+/* Gaya spesifik untuk mesej ralat */
+.error-message {
+    background-color: #f8d7da; /* Merah lembut */
+    color: #842029; /* Merah gelap */
+    display: block !important;
+}
+
+/* Menambah sedikit animasi pada spinner */
+#loading-spinner .spinner-border {
+    width: 3rem;
+    height: 3rem;
+}

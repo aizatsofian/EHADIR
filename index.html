@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem E-Hadir Staf</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container mt-4">
+        <div class="card text-center shadow">
+            <div class="card-header bg-primary text-white">
+                <h3>Sistem E-Hadir Staf</h3>
+                <p class="mb-0">Klinik Ihsan Siti Alor Gajah</p>
+            </div>
+            <div class="card-body">
+
+                <div id="scanner-container">
+                    <p>Sila halakan kamera pada Kod QR yang disediakan.</p>
+                    <div id="qr-reader" style="width: 100%;"></div>
+                    <div id="qr-reader-results"></div>
+                </div>
+
+                <div id="form-container" class="d-none">
+                    <h5 class="card-title mt-3">Sahkan Identiti Anda</h5>
+                    <p>Imbasan Berjaya! Sila masukkan 4 digit terakhir No. IC anda.</p>
+                    <div class="mb-3 mx-auto" style="max-width: 300px;">
+                        <input type="tel" id="ic-input" class="form-control form-control-lg text-center" maxlength="4" placeholder="XXXX" pattern="\d{4}">
+                    </div>
+                    <button id="submit-btn" class="btn btn-success">Hantar</button>
+                </div>
+
+                <div id="result-container" class="mt-3">
+                    <p id="status-message" class="fw-bold"></p>
+                </div>
+
+                <div id="loading-spinner" class="d-none">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p>Memproses...</p>
+                </div>
+
+            </div>
+            <div class="card-footer text-muted">
+                &copy; 2025 Klinik Ihsan Siti
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+    
+    <script src="script.js"></script>
+</body>
+</html>
